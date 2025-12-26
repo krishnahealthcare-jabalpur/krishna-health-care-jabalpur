@@ -12,9 +12,12 @@
   input, select { width: 100%; padding: 8px; margin-top: 5px; border-radius:5px; border:1px solid #ccc; }
   button { background: #28a745; color: #fff; padding: 10px; margin-top: 15px; border: none; border-radius:5px; cursor:pointer; width: 100%; }
   button:hover { background: #218838; }
-  .test-list { margin-top: 10px; }
+  .test-list { margin-top: 10px; max-height: 150px; overflow-y: auto; border:1px solid #ddd; border-radius:5px; }
   .test-item { padding: 5px; border-bottom: 1px solid #ddd; cursor:pointer; }
   .test-item:hover { background: #f0f0f0; }
+  .selected-tests { margin-top:10px; }
+  .selected-tests div { padding:5px; background:#f9f9f9; margin-bottom:5px; border-radius:5px; }
+  .total { font-weight:bold; margin-top:10px; }
 </style>
 </head>
 <body>
@@ -34,8 +37,10 @@
   
   <label for="testSearch">Search Test:</label>
   <input type="text" id="testSearch" placeholder="Type test name...">
-  
   <div class="test-list" id="testList"></div>
+  
+  <div class="selected-tests" id="selectedTests"></div>
+  <div class="total" id="totalAmount">Total: ₹0</div>
   
   <form id="bookingForm">
     <label>Name:</label>
@@ -61,7 +66,7 @@
     <input type="date" id="date" required>
     
     <label>Time Slot:</label>
-    <input type="time" id="time" required>
+    <select id="timeSlot"></select>
     
     <label>Payment Option:</label>
     <select id="payment">
@@ -82,9 +87,12 @@ const testData = [
   {name: "Lipid Profile", mrp: 800, rate: 480}
 ];
 
+let selectedTestsArr = [];
+
 const testSearch = document.getElementById('testSearch');
 const testList = document.getElementById('testList');
-let selectedTest = '';
+const selectedTestsDiv = document.getElementById('selectedTests');
+const totalAmountDiv = document.getElementById('totalAmount');
 
 function displayTests(filter='') {
   testList.innerHTML = '';
@@ -93,18 +101,59 @@ function displayTests(filter='') {
     const div = document.createElement('div');
     div.className = 'test-item';
     div.textContent = `${t.name} - MRP: ₹${t.mrp} | Your Rate: ₹${t.rate}`;
-    div.onclick = () => { selectedTest = t.name; testSearch.value = t.name; testList.innerHTML=''; };
+    div.onclick = () => { addTest(t); testSearch.value=''; testList.innerHTML=''; };
     testList.appendChild(div);
   });
+}
+
+function addTest(test) {
+  if(selectedTestsArr.find(t => t.name === test.name)) return;
+  selectedTestsArr.push(test);
+  renderSelectedTests();
+}
+
+function removeTest(name) {
+  selectedTestsArr = selectedTestsArr.filter(t => t.name !== name);
+  renderSelectedTests();
+}
+
+function renderSelectedTests() {
+  selectedTestsDiv.innerHTML = '';
+  let total = 0;
+  selectedTestsArr.forEach(t => {
+    total += t.rate;
+    const div = document.createElement('div');
+    div.textContent = `${t.name} - ₹${t.rate}`;
+    div.onclick = () => removeTest(t.name);
+    selectedTestsDiv.appendChild(div);
+  });
+  totalAmountDiv.textContent = `Total: ₹${total}`;
 }
 
 testSearch.addEventListener('input', () => displayTests(testSearch.value));
 
 displayTests();
 
+// Time Slot generation 6:00 AM to 8:30 PM in 30 min intervals
+const timeSlotSelect = document.getElementById('timeSlot');
+let start = 6*60; // 6:00 AM in minutes
+let end = 20*60+30; // 8:30 PM in minutes
+for(let t=start; t<=end; t+=30){
+  let h = Math.floor(t/60);
+  let m = t%60;
+  let hNext = Math.floor((t+30)/60);
+  let mNext = (t+30)%60;
+  let slot = `${(h<10?'0':'')+h}:${(m<10?'0':'')+m} - ${(hNext<10?'0':'')+hNext}:${(mNext<10?'0':'')+mNext}`;
+  let opt = document.createElement('option');
+  opt.value = slot;
+  opt.textContent = slot;
+  timeSlotSelect.appendChild(opt);
+}
+
+// Booking
 document.getElementById('bookingForm').addEventListener('submit', function(e){
   e.preventDefault();
-  if(!selectedTest){ alert("Please select a test."); return; }
+  if(selectedTestsArr.length===0){ alert("Please select at least one test."); return; }
   
   const name = document.getElementById('name').value;
   const age = document.getElementById('age').value;
@@ -112,11 +161,14 @@ document.getElementById('bookingForm').addEventListener('submit', function(e){
   const address = document.getElementById('address').value;
   const pincode = document.getElementById('pincode').value;
   const date = document.getElementById('date').value;
-  const time = document.getElementById('time').value;
+  const time = document.getElementById('timeSlot').value;
   const lab = document.getElementById('lab').value;
   const payment = document.getElementById('payment').value;
   
-  const msg = `*Krishna Health Care Booking*\n\nName: ${name}\nAge: ${age}\nGender: ${gender}\nAddress: ${address}\nPin: ${pincode}\nLab: ${lab}\nTest: ${selectedTest}\nDate: ${date}\nTime: ${time}\nPayment: ${payment}`;
+  let testMsg = selectedTestsArr.map(t=>`${t.name} - ₹${t.rate}`).join('\n');
+  let total = selectedTestsArr.reduce((sum,t)=>sum+t.rate,0);
+  
+  const msg = `*Krishna Health Care Booking*\n\nName: ${name}\nAge: ${age}\nGender: ${gender}\nAddress: ${address}\nPin: ${pincode}\nLab: ${lab}\nTests:\n${testMsg}\nTotal: ₹${total}\nDate: ${date}\nTime: ${time}\nPayment: ${payment}`;
   
   const whatsappURL = `https://api.whatsapp.com/send?phone=918120262770&text=${encodeURIComponent(msg)}`;
   window.open(whatsappURL, '_blank');
