@@ -3,219 +3,1027 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Krishna Health Care Services</title>
+
+<title>Krishna Health Care Services | Online Booking</title>
+
 <style>
-  body { font-family: Arial, sans-serif; margin: 0; padding: 0; background:#f4f4f4; }
-  .container { max-width: 600px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1);}
-  h2 { text-align: center; color: #333; }
-  label { display: block; margin-top: 10px; }
-  input, select { width: 100%; padding: 8px; margin-top: 5px; border-radius:5px; border:1px solid #ccc; }
-  button { background: #28a745; color: #fff; padding: 10px; margin-top: 15px; border: none; border-radius:5px; cursor:pointer; width: 100%; }
-  button:hover { background: #218838; }
-  .test-list { margin-top: 10px; max-height: 150px; overflow-y: auto; border:1px solid #ddd; border-radius:5px; }
-  .test-item { padding: 5px; border-bottom: 1px solid #ddd; cursor:pointer; }
-  .test-item:hover { background: #f0f0f0; }
-  .selected-tests { margin-top:10px; }
-  .selected-tests div { padding:5px; background:#f9f9f9; margin-bottom:5px; border-radius:5px; }
-  .total { font-weight:bold; margin-top:10px; }
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f1f7f8;
+    color:#18323b;
+}
+
+.header{
+    background:linear-gradient(135deg,#008c95,#006b73);
+    color:white;
+    padding:25px 15px;
+    text-align:center;
+}
+
+.header h1{
+    margin:0;
+    font-size:27px;
+}
+
+.header p{
+    margin:8px 0 0;
+}
+
+.container{
+    max-width:750px;
+    margin:25px auto;
+    padding:15px;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 8px 30px rgba(0,0,0,.10);
+}
+
+h2{
+    color:#00838b;
+    margin-top:0;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.full{
+    grid-column:1 / -1;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:6px;
+    font-size:14px;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:12px;
+    border:1px solid #ccd8dd;
+    border-radius:9px;
+    font-size:15px;
+}
+
+textarea{
+    resize:vertical;
+}
+
+.tests{
+    border:1px solid #d8e3e7;
+    border-radius:10px;
+    padding:10px;
+}
+
+.test{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:11px 5px;
+    border-bottom:1px solid #edf1f2;
+}
+
+.test:last-child{
+    border-bottom:0;
+}
+
+.test label{
+    margin:0;
+    font-weight:normal;
+}
+
+.test input{
+    width:auto;
+    margin-right:8px;
+}
+
+.total{
+    margin-top:18px;
+    padding:15px;
+    background:#eefafa;
+    border-radius:10px;
+    text-align:right;
+    font-size:22px;
+    font-weight:bold;
+    color:#007c84;
+}
+
+.payment{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:10px;
+}
+
+.payment label{
+    border:1px solid #ccd8dd;
+    padding:13px;
+    border-radius:10px;
+    text-align:center;
+    cursor:pointer;
+}
+
+.payment input{
+    width:auto;
+}
+
+button{
+    width:100%;
+    border:0;
+    padding:14px;
+    border-radius:10px;
+    background:#008c95;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    margin-top:18px;
+}
+
+button:hover{
+    background:#006e75;
+}
+
+.result{
+    display:none;
+    margin-top:20px;
+    padding:20px;
+    border-radius:14px;
+    background:#effbf5;
+    border:1px solid #c8ead8;
+}
+
+.success{
+    color:#087c50;
+    font-size:21px;
+    font-weight:bold;
+}
+
+.qr{
+    width:220px;
+    height:220px;
+    display:block;
+    margin:15px auto;
+}
+
+.upi-button{
+    display:block;
+    text-align:center;
+    background:#087c50;
+    color:white;
+    padding:13px;
+    border-radius:9px;
+    text-decoration:none;
+    font-weight:bold;
+    margin-top:10px;
+}
+
+.whatsapp{
+    display:block;
+    text-align:center;
+    background:#25D366;
+    color:white;
+    padding:14px;
+    border-radius:9px;
+    text-decoration:none;
+    font-weight:bold;
+    margin-top:12px;
+}
+
+.note{
+    font-size:12px;
+    color:#667780;
+    margin-top:12px;
+    line-height:1.5;
+}
+
+.footer{
+    text-align:center;
+    padding:20px;
+    color:#65777c;
+    font-size:13px;
+}
+
+@media(max-width:600px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+    .payment{
+        grid-template-columns:1fr;
+    }
+}
 </style>
 </head>
+
 <body>
 
-<div class="container">
-  <h2>Krishna Health Care Services</h2>
-  
-  <label for="lab">Select Lab Partner:</label>
-  <select id="lab">
-    <option value="Thyrocare">Thyrocare (NEXT DAY REPORT NABL LAB) </option>
-    <option value="Pathcare">Pathcare (SAME DAY REPORT) </option>
-    <option value="Sage Path Lab">Sage Path Lab (NEXT DAY REPORT NABL LAB)</option>
-    <option value="General Diagnosis">General Diagnosis (NEXT DAY REPORT NABL LAB)</option>
-    <option value="Sewarth Path Lab">Sewarth Path Lab (SAME DAY REPORT) </option>
-    <option value="Medcis">Medcis (SAME DAY REPORT)</option>
-  </select>
-  
-  <label for="testSearch">Search Test:</label>
-  <input type="text" id="testSearch" placeholder="Type test name...">
-  <div class="test-list" id="testList"></div>
-  
-  <div class="selected-tests" id="selectedTests"></div>
-  <div class="total" id="totalAmount">Total: ₹0</div>
-  
-  <form id="bookingForm">
-    <label>Name:</label>
-    <input type="text" id="name" required>
-    
-    <label>Age:</label>
-    <input type="number" id="age" required>
-    
-    <label>Gender:</label>
-    <select id="gender">
-      <option value="Male">Male</option>
-      <option value="Female">Female</option>
-      <option value="Other">Other</option>
-    </select>
-    
-    <label>Address:</label>
-    <input type="text" id="address" required>
-    
-    <label>email:</label>
-    <input type="text" id="email" required>
-    
-    <label>Pin Code:</label>
-    <input type="text" id="pincode" required>
-    
-    <label>Date:</label>
-    <input type="date" id="date" required>
-    
-    <label>Time Slot:</label>
-    <select id="timeSlot"></select>
-    
-    <label>Payment Option:</label>
-    <select id="payment">
-      <option value="Cash">Cash</option>
-      <option value="UPI QR">UPI QR</option>
-      <option value="Online Payment">Online Payment</option>
-    </select>
-    
-    <button type="submit">Book on WhatsApp</button>
-  </form>
+<div class="header">
+
+<h1>Krishna Health Care Services</h1>
+
+<p>Online Test Booking & Home Collection</p>
+
 </div>
 
+
+<div class="container">
+
+<div class="card">
+
+<h2>🧪 Online Booking</h2>
+
+<form id="bookingForm">
+
+<div class="grid">
+
+<div>
+<label>Patient Name *</label>
+<input type="text" id="name" required>
+</div>
+
+<div>
+<label>Mobile Number *</label>
+<input type="tel"
+       id="mobile"
+       maxlength="10"
+       pattern="[0-9]{10}"
+       required>
+</div>
+
+
+<div>
+
+<label>Age *</label>
+
+<input type="number"
+       id="age"
+       min="1"
+       max="120"
+       required>
+
+</div>
+
+
+<div>
+
+<label>Gender *</label>
+
+<select id="gender" required>
+
+<option value="">Select Gender</option>
+
+<option>Male</option>
+
+<option>Female</option>
+
+<option>Other</option>
+
+</select>
+
+</div>
+
+
+<div class="full">
+
+<label>Address *</label>
+
+<textarea id="address"
+          rows="2"
+          required></textarea>
+
+</div>
+
+
+<div>
+
+<label>PIN Code</label>
+
+<input type="text"
+       id="pin"
+       maxlength="6">
+
+</div>
+
+
+<div>
+
+<label>Lab / Service</label>
+
+<select id="lab">
+
+<option>Krishna Health Care Services</option>
+
+<option>Thyrocare</option>
+
+<option>Pathcare</option>
+
+<option>General Diagnostics</option>
+
+<option>Medcis</option>
+
+<option>Sage Path Lab</option>
+
+<option>Accuprob</option>
+
+</select>
+
+</div>
+
+
+<div>
+
+<label>Collection Date *</label>
+
+<input type="date"
+       id="date"
+       required>
+
+</div>
+
+
+<div>
+
+<label>Time Slot *</label>
+
+<select id="slot" required></select>
+
+</div>
+
+
+<div class="full">
+
+<label>Select Test / Package *</label>
+
+<div class="tests">
+
+
+<div class="test">
+
+<label>
+
+<input type="checkbox"
+       data-name="CBC"
+       data-price="199">
+
+CBC — ₹199
+
+</label>
+
+</div>
+
+
+<div class="test">
+
+<label>
+
+<input type="checkbox"
+       data-name="Vitamin D"
+       data-price="349">
+
+Vitamin D — ₹349
+
+</label>
+
+</div>
+
+
+<div class="test">
+
+<label>
+
+<input type="checkbox"
+       data-name="HbA1c"
+       data-price="249">
+
+HbA1c — ₹249
+
+</label>
+
+</div>
+
+
+<div class="test">
+
+<label>
+
+<input type="checkbox"
+       data-name="Lipid Profile"
+       data-price="299">
+
+Lipid Profile — ₹299
+
+</label>
+
+</div>
+
+
+<div class="test">
+
+<label>
+
+<input type="checkbox"
+       data-name="Full Body Basic"
+       data-price="999">
+
+Full Body Basic — ₹999
+
+</label>
+
+</div>
+
+
+<div class="test">
+
+<label>
+
+<input type="checkbox"
+       data-name="Full Body Advance"
+       data-price="1299">
+
+Full Body Advance — ₹1299
+
+</label>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="total">
+
+Total Amount:
+₹<span id="total">0</span>
+
+</div>
+
+
+<label>Payment Method</label>
+
+<div class="payment">
+
+<label>
+
+<input type="radio"
+       name="payment"
+       value="Cash"
+       checked>
+
+💵 Cash
+
+</label>
+
+
+<label>
+
+<input type="radio"
+       name="payment"
+       value="UPI">
+
+📱 UPI / QR
+
+</label>
+
+</div>
+
+
+<button type="submit">
+
+Confirm Booking
+
+</button>
+
+</form>
+
+
+<div id="result" class="result">
+
+<div class="success">
+
+✅ Booking Created Successfully
+
+</div>
+
+
+<p>
+
+<b>Booking ID:</b>
+
+<span id="bookingId"></span>
+
+</p>
+
+
+<p>
+
+<b>Patient:</b>
+
+<span id="rname"></span>
+
+</p>
+
+
+<p>
+
+<b>Tests:</b>
+
+<span id="rtest"></span>
+
+</p>
+
+
+<p>
+
+<b>Total Amount:</b>
+
+₹<span id="ramount"></span>
+
+</p>
+
+
+<div id="upiBox"
+     style="display:none">
+
+<h3 style="text-align:center">
+
+UPI Payment
+
+</h3>
+
+
+<img id="qr"
+     class="qr"
+     alt="UPI QR Code">
+
+
+<p style="text-align:center">
+
+<b>UPI ID</b><br>
+
+8120262770@ptyes
+
+</p>
+
+
+<a id="upiLink"
+   class="upi-button"
+   href="#">
+
+📱 Pay Now with UPI
+
+</a>
+
+
+<p class="note">
+
+QR/UPI button आपके फोन में उपलब्ध UPI app को खोल सकता है।
+
+</p>
+
+</div>
+
+
+<a id="whatsapp"
+   class="whatsapp"
+   href="#"
+   target="_blank">
+
+📲 Send Booking on WhatsApp
+
+</a>
+
+
+<p class="note">
+
+Booking details WhatsApp message में automatically तैयार हो जाएँगी।
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="footer">
+
+© 2026 Krishna Health Care Services<br>
+
+Online Booking & Home Collection
+
+</div>
+
+
 <script>
-const testData = [
-  {name: "CBC", mrp: 300, rate: 200},
-  {name: "AAROGYAM CAMP PROFILE 1(62 TESTS)", mrp: 2299, rate: 1149},
-  {name: "AAROGYAM CAMP PROFILE 2(69 TESTS)", mrp: 3399, rate: 1699},
-  {name: "AAROGYAM CAMP PROFILE 3(78 TESTS)", mrp: 4799, rate: 2399},
-  {name: "Blood Sugar", mrp: 100, rate: 60},
-  {name: "HBSAG", mrp: 300, rate: 120},
-  {name: "VDRL", mrp: 300, rate: 120},
-  {name: "HIV", mrp: 400, rate: 160},
-  {name: "Semen analysis", mrp: 300, rate: 120},
-  {name: "AMH", mrp: 2500, rate: 1500},
-  {name: "PROLCTIN", mrp: 500, rate: 300},
-  {name: "FSH", mrp: 500, rate: 300},
-  {name: "LH", mrp: 500, rate: 300},
-  {name: "Urine culture", mrp: 600, rate: 240},
-  {name: "MP", mrp: 200, rate: 120},
-  {name: "WIDAL", mrp: 150, rate: 90},
-  {name: "SGPT", mrp: 200, rate: 120},
-  {name: "Serum creatinine", mrp: 200, rate: 120},
-  {name: "Ra factor", mrp: 500, rate: 300},
-  {name: "Aargyam c pro", mrp: 2700, rate: 1620},
-  {name: "Urine analysis", mrp: 150, rate: 90},
-  {name: "Blood goup", mrp: 200, rate: 120},
-  {name: "Crp", mrp: 500, rate: 300},
-  {name: "Testosterone", mrp: 800, rate: 480},
-  {name: "Cardiac risk markers", mrp: 1200, rate: 720},
-  {name: "Hba1c", mrp: 500, rate: 300},
-  {name: "Serum Electrolyte ", mrp: 400, rate: 240},
-  {name: "Liver profile", mrp: 800, rate: 520},
-  {name: "Thyroid Profile", mrp: 500, rate: 300},
-  {name: "Renal profile ", mrp: 600, rate: 360},
-  {name: "Vitamin d total", mrp: 1500, rate: 900},
-  {name: "Vitamin b12", mrp: 1000, rate: 600},
-  {name: "Iron profile", mrp: 650, rate: 390},
-  {name: "Lipid Profile", mrp: 800, rate: 480}
-];
 
-let selectedTestsArr = [];
 
-const testSearch = document.getElementById('testSearch');
-const testList = document.getElementById('testList');
-const selectedTestsDiv = document.getElementById('selectedTests');
-const totalAmountDiv = document.getElementById('totalAmount');
+/* =========================
+   YOUR DETAILS
+========================= */
 
-function displayTests(filter='') {
-  testList.innerHTML = '';
-  const filtered = testData.filter(t => t.name.toLowerCase().includes(filter.toLowerCase()));
-  filtered.forEach(t => {
-    const div = document.createElement('div');
-    div.className = 'test-item';
-    div.textContent = `${t.name} - MRP: ₹${t.mrp} | Your Rate: ₹${t.rate}`;
-    div.onclick = () => { addTest(t); testSearch.value=''; testList.innerHTML=''; };
-    testList.appendChild(div);
-  });
+const UPI_ID = "8120262770@ptyes";
+
+const WHATSAPP_NUMBER = "918120262770";
+
+
+/* =========================
+   TIME SLOTS
+========================= */
+
+const slot = document.getElementById("slot");
+
+
+for(let h = 6; h < 20; h++){
+
+    for(let m of [0,30]){
+
+        let startHour = h;
+
+        let startMinute = m;
+
+        let endHour = h;
+
+        let endMinute = m + 30;
+
+        if(endMinute === 60){
+
+            endMinute = 0;
+
+            endHour++;
+
+        }
+
+        let start =
+            String(startHour).padStart(2,"0")
+            + ":"
+            +
+            String(startMinute).padStart(2,"0");
+
+
+        let end =
+            String(endHour).padStart(2,"0")
+            + ":"
+            +
+            String(endMinute).padStart(2,"0");
+
+
+        slot.add(
+            new Option(
+                start + " - " + end,
+                start + " - " + end
+            )
+        );
+
+    }
+
 }
 
-function addTest(test) {
-  if(selectedTestsArr.find(t => t.name === test.name)) return;
-  selectedTestsArr.push(test);
-  renderSelectedTests();
+
+/* =========================
+   MINIMUM DATE
+========================= */
+
+const dateInput =
+    document.getElementById("date");
+
+dateInput.min =
+    new Date()
+    .toISOString()
+    .split("T")[0];
+
+
+/* =========================
+   TOTAL CALCULATION
+========================= */
+
+function calculateTotal(){
+
+    let total = 0;
+
+    document
+    .querySelectorAll(
+        ".tests input:checked"
+    )
+    .forEach(function(item){
+
+        total +=
+            Number(item.dataset.price);
+
+    });
+
+
+    document.getElementById("total")
+    .textContent = total;
+
 }
 
-function removeTest(name) {
-  selectedTestsArr = selectedTestsArr.filter(t => t.name !== name);
-  renderSelectedTests();
-}
 
-function renderSelectedTests() {
-  selectedTestsDiv.innerHTML = '';
-  let total = 0;
-  selectedTestsArr.forEach(t => {
-    total += t.rate;
-    const div = document.createElement('div');
-    div.textContent = `${t.name} - ₹${t.rate}`;
-    div.onclick = () => removeTest(t.name);
-    selectedTestsDiv.appendChild(div);
-  });
-  totalAmountDiv.textContent = `Total: ₹${total}`;
-}
+document
+.querySelectorAll(".tests input")
+.forEach(function(item){
 
-testSearch.addEventListener('input', () => displayTests(testSearch.value));
+    item.addEventListener(
+        "change",
+        calculateTotal
+    );
 
-displayTests();
-
-// Time Slot generation 6:00 AM to 8:30 PM in 30 min intervals
-const timeSlotSelect = document.getElementById('timeSlot');
-let start = 6*60; // 6:00 AM in minutes
-let end = 20*60+30; // 8:30 PM in minutes
-for(let t=start; t<=end; t+=30){
-  let h = Math.floor(t/60);
-  let m = t%60;
-  let hNext = Math.floor((t+30)/60);
-  let mNext = (t+30)%60;
-  let slot = `${(h<10?'0':'')+h}:${(m<10?'0':'')+m} - ${(hNext<10?'0':'')+hNext}:${(mNext<10?'0':'')+mNext}`;
-  let opt = document.createElement('option');
-  opt.value = slot;
-  opt.textContent = slot;
-  timeSlotSelect.appendChild(opt);
-}
-
-// Booking
-document.getElementById('bookingForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  if(selectedTestsArr.length===0){ alert("Please select at least one test."); return; }
-  
-  const name = document.getElementById('name').value;
-  const age = document.getElementById('age').value;
-  const gender = document.getElementById('gender').value;
-  const address = document.getElementById('address').value;
-  const email = document.getElementById('email').value;
-  const pincode = document.getElementById('pincode').value;
-  const date = document.getElementById('date').value;
-  const time = document.getElementById('timeSlot').value;
-  const lab = document.getElementById('lab').value;
-  const payment = document.getElementById('payment').value;
-  
-  let testMsg = selectedTestsArr.map(t=>`${t.name} - ₹${t.rate}`).join('\n');
-  let total = selectedTestsArr.reduce((sum,t)=>sum+t.rate,0);
-  
-  const msg = `*Krishna Health Care Booking*\n\nName: ${name}\nAge: ${age}\nGender: ${gender}\nAddress: ${address}\nPin: ${pincode}\nLab: ${lab}\nTests:\n${testMsg}\nTotal: ₹${total}\nDate: ${date}\nTime: ${time}\nPayment: ${payment}`;
-  
-  const whatsappURL = `https://api.whatsapp.com/send?phone=918120262770&text=${encodeURIComponent(msg)}`;
-  window.open(whatsappURL, '_blank');
 });
+
+
+/* =========================
+   BOOKING
+========================= */
+
+document
+.getElementById("bookingForm")
+.addEventListener("submit", function(e){
+
+    e.preventDefault();
+
+
+    const selected =
+        Array.from(
+            document.querySelectorAll(
+                ".tests input:checked"
+            )
+        );
+
+
+    if(selected.length === 0){
+
+        alert(
+            "Please select at least one test or package."
+        );
+
+        return;
+
+    }
+
+
+    let amount = 0;
+
+
+    selected.forEach(function(item){
+
+        amount +=
+            Number(item.dataset.price);
+
+    });
+
+
+    const tests =
+        selected
+        .map(function(item){
+
+            return item.dataset.name;
+
+        })
+        .join(", ");
+
+
+    const bookingId =
+        "KHC-" +
+        Date.now()
+        .toString()
+        .slice(-8);
+
+
+    const name =
+        document.getElementById("name").value;
+
+    const mobile =
+        document.getElementById("mobile").value;
+
+    const age =
+        document.getElementById("age").value;
+
+    const gender =
+        document.getElementById("gender").value;
+
+    const address =
+        document.getElementById("address").value;
+
+    const date =
+        document.getElementById("date").value;
+
+    const time =
+        document.getElementById("slot").value;
+
+    const lab =
+        document.getElementById("lab").value;
+
+    const payment =
+        document.querySelector(
+            'input[name="payment"]:checked'
+        ).value;
+
+
+    /* =========================
+       SHOW BOOKING
+    ========================= */
+
+    document.getElementById("bookingId")
+    .textContent = bookingId;
+
+
+    document.getElementById("rname")
+    .textContent = name;
+
+
+    document.getElementById("rtest")
+    .textContent = tests;
+
+
+    document.getElementById("ramount")
+    .textContent = amount;
+
+
+    document.getElementById("result")
+    .style.display = "block";
+
+
+    /* =========================
+       UPI LINK
+    ========================= */
+
+    const upiParams =
+        new URLSearchParams({
+
+            pa: UPI_ID,
+
+            pn: "Krishna Health Care Services",
+
+            am: amount.toFixed(2),
+
+            cu: "INR",
+
+            tn: "Booking " + bookingId
+
+        });
+
+
+    const upiLink =
+        "upi://pay?" +
+        upiParams.toString();
+
+
+    document.getElementById("upiLink")
+    .href = upiLink;
+
+
+    /* =========================
+       QR CODE
+    ========================= */
+
+    const qrURL =
+        "https://api.qrserver.com/v1/create-qr-code/" +
+        "?size=250x250&data=" +
+        encodeURIComponent(upiLink);
+
+
+    document.getElementById("qr")
+    .src = qrURL;
+
+
+    if(payment === "UPI"){
+
+        document.getElementById("upiBox")
+        .style.display = "block";
+
+    }
+
+    else{
+
+        document.getElementById("upiBox")
+        .style.display = "none";
+
+    }
+
+
+    /* =========================
+       WHATSAPP MESSAGE
+    ========================= */
+
+    const message =
+
+        "🧪 *NEW BOOKING*" +
+
+        "\n\n" +
+
+        "*Krishna Health Care Services*" +
+
+        "\n\n" +
+
+        "🆔 Booking ID: " +
+        bookingId +
+
+        "\n" +
+
+        "👤 Patient: " +
+        name +
+
+        "\n" +
+
+        "📱 Mobile: " +
+        mobile +
+
+        "\n" +
+
+        "🎂 Age: " +
+        age +
+
+        "\n" +
+
+        "⚧ Gender: " +
+        gender +
+
+        "\n" +
+
+        "🧪 Tests: " +
+        tests +
+
+        "\n" +
+
+        "🏥 Lab: " +
+        lab +
+
+        "\n" +
+
+        "📅 Date: " +
+        date +
+
+        "\n" +
+
+        "⏰ Time: " +
+        time +
+
+        "\n" +
+
+        "💰 Amount: ₹" +
+        amount +
+
+        "\n" +
+
+        "💳 Payment: " +
+        payment +
+
+        "\n\n" +
+
+        "📍 Address: " +
+        address;
+
+
+    const whatsappURL =
+
+        "https://wa.me/" +
+
+        WHATSAPP_NUMBER +
+
+        "?text=" +
+
+        encodeURIComponent(message);
+
+
+    document.getElementById("whatsapp")
+    .href = whatsappURL;
+
+
+    /* Scroll */
+
+    document.getElementById("result")
+    .scrollIntoView({
+
+        behavior:"smooth"
+
+    });
+
+});
+
+
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
